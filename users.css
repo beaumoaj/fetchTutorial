@@ -1,0 +1,24 @@
+.container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding: 10px;
+    width = 95%;
+}
+
+.item {
+    padding: 8px;
+    margin: 4px;
+    border: solid;
+    align-items: center;
+}
+
+.item img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.item p {
+    text-align: center;
+}
+
