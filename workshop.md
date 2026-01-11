@@ -10,11 +10,14 @@ Feedback Link: ajbeaumont.tb@gmail.com
 
 ## Introduction
 
+In this workshop you are going to learn how to use `fetch` to get some data in JSON format from an API.
+
 ## Getting data about random users
 
-go to [https://randomuser.me]([https://randomuser.me) and look at the home page.  It is a rendering of some random about a user.  You can get such data for yourself.  Let's do that now.
+Go to [https://randomuser.me]([https://randomuser.me) and look at the home page.  It is a rendering of some random about a user.  You can get such data for yourself.  Let's do that now.
 
 1. Enter [https://randomuser.me/api]([https://randomuser.me/api) into your browser and observe what you get.  The JSON code below shows a response I got when I used the request [https://randomuser.me/api?nat=gb](https://randomuser.me/api?nat=gb) which specifies through the parameter `nat=gb` that the data should reflect a British user.
+
 ```javascript
 {
     "results":[
@@ -89,20 +92,26 @@ Note that the top level properties of the JSON data we get are `results` and `in
 ## Fetching the data in Javascript
 
 Lets start with the code below.  Save it into a file called `fetchUsers.js`.  We will look at what it does and then develop it until it works.
+
+> aside negative
+> The code below does not work in the way we want it to.  We will eventually turn it into code that we can use.
+
 ```javascript
 const endpoint = "https://randomuser.me/api?nat=GB&results=10";
 
 const fetchUsers = () => {
-  const response =  fetch(endpoint);
-    console.log(response);
+	const response =  fetch(endpoint);
+	console.log(response);
 };
+
+fetchUsers();
 ```
 Run this code using `node fetchUsers.js` and you should see the following output:
 ```console
 Promise { <pending> }
 ```
 
-What does this mean?  What is a `Promise` and why is it pending?
+This output is not the data we expected.  What does this mean?  What is a `Promise` and why is it pending?
 
 A request over the internet to a server asking for data takes some time.  In fact it takes longer than it takes for the running Javascript code to get to the `console.log` command, so at this point we don't yet have a response, only a promise of a response.
 
@@ -123,7 +132,7 @@ const fetchUsers = () => {
 
 Run the program again and you will see an error message that starts with a message like this:
 ```console
-$ node fetchv1.js 
+$ node fetchUsers.js 
 ./fetchUsers.js:4
   const response =  await fetch(endpoint);
                     ^^^^^
@@ -131,7 +140,7 @@ $ node fetchv1.js
 SyntaxError: await is only valid in async functions and the top level bodies of modules
 ```
 
-The first line is the command to run the program.  The next line is the first line of the response telling us there is an error on line 4 of `fetchUsers.js` (the line number may be different in your version but the next line shows is the message is referring to the `await` that we just added to the code.  The description below that tells us that we can only use `await` in an `async` function.
+The first line is the command to run the program.  The next line is the first line of the response telling us there is an error on line 4 of `fetchUsers.js` (the line number may be different in your version but the next line shows that the error is related to the `await` that we just added to the code.  The description below that tells us that we can only use `await` in an `async` function.
 
 ## Why do we need an async function?
 
@@ -177,7 +186,7 @@ Response {
 }
 ```
 
-OOnce we get this far we know that the request was successful and although we cannot see the JSON data being returned, the `Response` represents the HTTP response to our request and it contains `status: 200` and `statusText: 'OK'`.
+The `Response` object represents the HTTP response to our fetch request and it contains `status: 200` and `statusText: 'OK'` which means that the request was successful.  So where is our data?
 
 ## Accessing the JSON data
 
@@ -196,20 +205,20 @@ const fetchUsers = async () => {
 };
 ```
 
-Now when we run the code, we should see the data we requested.  Notice that the `endpoint` variable contains parameters asking for 10 results. I've shorted the code in the example below, the `...` indicates where I have abbreviated the object data.  You should see 10 objects describing 10 random users in the `results` list:
+Now when we run the code, we should see the data we requested.  Notice that the `endpoint` variable contains parameters asking for 10 results. I've abbreivated the code in the example below, the `...` indicates where I have abbreviated the object data.  When you run the code, you should see that the `results` list contains 10 objects describing 10 random users.
 
 ```javascript
 {
-  results: [
-    {
-      gender: 'male',
-	  ...
-	},
-	...
-  ],
-  info: {
-    ...
-  }
+	results: [
+		{
+			gender: 'male',
+			...
+		},
+		...
+	],
+	info: {
+		...
+	}
 }
 ```
 
@@ -228,7 +237,7 @@ const fetchUsers = async () => {
 
 console.log(fetchUsers());
 ```
-When we run this version we again see the output `Promise { <pending> }`.
+When we run this version we again see the output `Promise { &lt;pending&gt; }`.
 
 We see that output because `fetchUsers` is an `async` function and runs in another thread.  We need our call to `fetchUsers` to `await` its response.  Edit your code once more to await the result of the call to `fetchUsers`:
 ```javascript
@@ -255,7 +264,7 @@ fetchUsers().then((userData) => {
     console.log(userData);
 });
 ```
-
+When you run this version, you should again see the JSON data being printed.
 ## Rendering the data in a web page
 
 Lets create an `index.html` where we will display the user data.  We will include the `fetchUsers` script in the file and set up a `div` where we can display the users.
@@ -276,7 +285,7 @@ Lets create an `index.html` where we will display the user data.  We will includ
 
 In VSCode you can right click the `index.html` and choose `View in Live Server`.  Do that now, you should see a page with the `h1` header and if you open the developer tools and look in the console you should see the output of the `console.log`.
 
-Here is a CSS file we can use to format the data when we display it:
+Here is a CSS file we can use to format the data when we display it.  Save the following code into a file called `users.css` which you will see referenced in the `index.html` as the stylesheet being used:
 
 ```css
 .container {
@@ -304,7 +313,21 @@ Here is a CSS file we can use to format the data when we display it:
 }
 ```
 
-Lets update our script to add a new function to render the data in the web page.  I've used a `state` object which is similar to the one used in your TV project starter code so that you can use this tutorial to guide you in writing the code for that project.
+Lets update our script to add a new function to render the data in the web page.  I've used a `state` object which is similar to the one used in your TV project starter code so that you can use this tutorial to guide you in writing the code for that project.  We will use the `state` object to store the data we get from the API so that only need make one call to the API.  Our call to `fetchUsers` will look like this:
+```javascript
+const state = {
+  users: [], // this is our list of users
+};
+
+// code ommitted
+
+fetchUsers().then((users) => {
+  state.users = users.results;
+  render();
+});
+```
+
+Here is the full code.  We have covered generating HTML objects in Javascript in previous weeks, so I have commented the code so you can read through it to see what the `render` and `displayPerson` functions are doing.  In summary, the `render` function sets up a grid container and then calls `displayPerson` for each random person in the `results` list and `displayPerson` generates the HTML code for each person.
 
 ```javascript
 // Begin with an empty state
@@ -328,12 +351,12 @@ function render() {
     div.className = "container";
     // for each person in the list of users
     for (let index = 0; index < state.users.length; index++) {
-	// get the person object
-	const person = state.users[index];
-	// get the HTML displaying that person
-	const cell = displayPerson(person);
-	// append to the container grid
-	div.appendChild(cell);
+		// get the person object
+		const person = state.users[index];
+		// get the HTML to display that person
+		const cell = displayPerson(person);
+		// append this person's HTML to the container grid
+		div.appendChild(cell);
     }
     // append the container to the content
     content.appendChild(div);
@@ -352,7 +375,6 @@ function displayPerson(person) {
     cell.appendChild(nameHeader);
     // return the div
     return cell
-
 }
 
 fetchUsers().then((users) => {
