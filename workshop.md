@@ -19,7 +19,7 @@ In this workshop you are going to learn how to use `fetch` to get some data in J
 
 ## Getting data about random users
 
-Go to [https://randomuser.me]([https://randomuser.me) and look at the home page.  It is a rendering of some random about a user.  You can get such data for yourself.  Let's do that now.
+Go to [https://randomuser.me]([https://randomuser.me) and look at the home page.  It is a rendering of some information about a random (fictitious) user.  You can get such data for yourself.  Let's do that now.
 
 1. Enter [https://randomuser.me/api]([https://randomuser.me/api) into your browser and observe what you get.  The JSON code below shows a response I got when I used the request [https://randomuser.me/api?nat=gb](https://randomuser.me/api?nat=gb) which specifies through the parameter `nat=gb` that the data should reflect a British user.
    
