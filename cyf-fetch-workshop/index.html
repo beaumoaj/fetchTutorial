@@ -1,0 +1,436 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Codelab Markdown Template</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style><link rel='stylesheet' href='cyf.css'/>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="cyf-fetch-workshop"
+                  title="Codelab Markdown Template"
+                  environment="web"
+                  feedback-link="ajbeaumont.tb@gmail.com">
+    
+      <google-codelab-step label="Introduction" duration="0">
+        <p>In this workshop you are going to learn how to use <code>fetch</code> to get some data in JSON format from an API.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Getting data about random users" duration="0">
+        <p>Go to <a href="%5Bhttps://randomuser.me" target="_blank">https://randomuser.me</a> and look at the home page.  It is a rendering of some random about a user.  You can get such data for yourself.  Let&#39;s do that now.</p>
+<ol type="1">
+<li>Enter <a href="%5Bhttps://randomuser.me/api" target="_blank">https://randomuser.me/api</a> into your browser and observe what you get.  The JSON code below shows a response I got when I used the request <a href="https://randomuser.me/api?nat=gb" target="_blank">https://randomuser.me/api?nat=gb</a> which specifies through the parameter <code>nat=gb</code> that the data should reflect a British user.</li>
+</ol>
+<pre><code language="language-javascript" class="language-javascript">{
+    &#34;results&#34;:[
+	{
+	    &#34;gender&#34;:&#34;female&#34;,
+	    &#34;name&#34;:{
+		&#34;title&#34;:&#34;Miss&#34;,
+		&#34;first&#34;:&#34;Brooke&#34;,
+		&#34;last&#34;:&#34;Morrison&#34;
+	    },
+	    &#34;location&#34;:{
+		&#34;street&#34;:{
+		    &#34;number&#34;:4134,
+		    &#34;name&#34;:&#34;Stanley Road&#34;
+		},
+		&#34;city&#34;:&#34;Ripon&#34;,
+		&#34;state&#34;:&#34;Humberside&#34;,
+		&#34;country&#34;:&#34;United Kingdom&#34;,
+		&#34;postcode&#34;:&#34;NO2V 2WE&#34;,
+		&#34;coordinates&#34;:{
+		    &#34;latitude&#34;:&#34;-56.0759&#34;,
+		    &#34;longitude&#34;:&#34;99.0842&#34;
+		},
+		&#34;timezone&#34;:{
+		    &#34;offset&#34;:&#34;-7:00&#34;,
+		    &#34;description&#34;:&#34;Mountain Time (US &amp; Canada)&#34;
+		}
+	    },
+	    &#34;email&#34;:&#34;brooke.morrison@example.com&#34;,
+	    &#34;login&#34;:{
+		&#34;uuid&#34;:&#34;2a026cb8-fab9-499e-a53c-cefe1984f3d9&#34;,
+		&#34;username&#34;:&#34;smallrabbit896&#34;,
+		&#34;password&#34;:&#34;canon&#34;,
+		&#34;salt&#34;:&#34;PQJKL44w&#34;,
+		&#34;md5&#34;:&#34;15f0f4c50c4a161b11d48c5fd61fc66b&#34;,
+		&#34;sha1&#34;:&#34;a05d1b3deebb6668fd8bda330cffc127cd602355&#34;,
+		&#34;sha256&#34;:&#34;90154f0e072d7c6256070b2cd17724c70c17a977aee2bda6e0ba53e79af4bfbf&#34;
+	    },
+	    &#34;dob&#34;:{
+		&#34;date&#34;:&#34;2000-04-17T13:19:33.931Z&#34;,
+		&#34;age&#34;:25
+	    },
+	    &#34;registered&#34;:{
+		&#34;date&#34;:&#34;2020-09-03T18:31:44.668Z&#34;,
+		&#34;age&#34;:5
+	    },
+	    &#34;phone&#34;:&#34;0114084 333 9122&#34;,
+	    &#34;cell&#34;:&#34;07298 319447&#34;,
+	    &#34;id&#34;:{
+		&#34;name&#34;:&#34;NINO&#34;,
+		&#34;value&#34;:&#34;NG 93 19 70 B&#34;
+	    },
+	    &#34;picture&#34;:{
+		&#34;large&#34;:&#34;https://randomuser.me/api/portraits/women/6.jpg&#34;,
+		&#34;medium&#34;:&#34;https://randomuser.me/api/portraits/med/women/6.jpg&#34;,
+		&#34;thumbnail&#34;:&#34;https://randomuser.me/api/portraits/thumb/women/6.jpg&#34;
+	    },
+	    &#34;nat&#34;:&#34;GB&#34;
+	}
+    ],
+    &#34;info&#34;:{
+	&#34;seed&#34;:&#34;a2bd05d1564baf05&#34;,
+	&#34;results&#34;:1,
+	&#34;page&#34;:1,
+	&#34;version&#34;:&#34;1.4&#34;
+    }
+}
+</code></pre>
+<p>Note that the top level properties of the JSON data we get are <code>results</code> and <code>info</code>.  The <code>results</code> property is a list of objects, each describing a user.  In the example above we only have one user returned.  If we want more users returned we should add the parameter <code>results=10</code> which would get us data on 10 users, for example <a href="https://randomuser.me/api?nat=gb&results=10" target="_blank">https://randomuser.me/api?nat=gb&amp;results=10</a>.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fetching the data in Javascript" duration="0">
+        <p>Lets start with the code below.  Save it into a file called <code>fetchUsers.js</code>.  We will look at what it does and then develop it until it works.</p>
+<aside class="warning"><p> The code below does not work in the way we want it to.  We will eventually turn it into code that we can use.</p>
+</aside>
+<pre><code language="language-javascript" class="language-javascript">const endpoint = &#34;https://randomuser.me/api?nat=GB&amp;results=10&#34;;
+
+const fetchUsers = () =&gt; {
+	const response =  fetch(endpoint);
+	console.log(response);
+};
+
+fetchUsers();
+</code></pre>
+<p>Run this code using <code>node fetchUsers.js</code> and you should see the following output:</p>
+<pre>Promise { &lt;pending&gt; }
+</pre>
+<p>This output is not the data we expected.  What does this mean?  What is a <code>Promise</code> and why is it pending?</p>
+<p>A request over the internet to a server asking for data takes some time.  In fact it takes longer than it takes for the running Javascript code to get to the <code>console.log</code> command, so at this point we don&#39;t yet have a response, only a promise of a response.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Waiting for a response" duration="0">
+        <p>To tell Javascript to wait for an answer to the request we need to use the keyword <code>await</code>.  As we shall see, <code>await</code> on its own is not enough.</p>
+<p>Edit <code>fetchUsers.js</code> to add an <code>await</code> immediately before the <code>fetch</code>.  Your code should look like this:</p>
+<pre><code language="language-javascript" class="language-javascript">const endpoint = &#34;https://randomuser.me/api?nat=GB&amp;results=10&#34;;
+
+const fetchUsers = () =&gt; {
+  const response =  await fetch(endpoint);
+  console.log(response);
+};
+</code></pre>
+<p>Run the program again and you will see an error message that starts with a message like this:</p>
+<pre>$ node fetchUsers.js 
+./fetchUsers.js:4
+  const response =  await fetch(endpoint);
+                    ^^^^^
+
+SyntaxError: await is only valid in async functions and the top level bodies of modules
+</pre>
+<p>The first line is the command to run the program.  The next line is the first line of the response telling us there is an error on line 4 of <code>fetchUsers.js</code> (the line number may be different in your version but the next line shows that the error is related to the <code>await</code> that we just added to the code.  The description below that tells us that we can only use <code>await</code> in an <code>async</code> function.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Why do we need an async function?" duration="0">
+        <p>When the <code>await</code> keyword is seen, execution of the program is suspended until we get a response.  Javascript does not allow us to suspend the main thread of our program, so we need to label the function with <code>async</code> to allow it to be executed in another thread which can be suspended.  Functions labelled <code>async</code> may include one or more <code>await</code> statements.</p>
+<p>Update your function to add the <code>async</code> label:</p>
+<pre><code language="language-javascript" class="language-javascript">const fetchUsers = async () =&gt; {
+  const response =  await fetch(endpoint);
+  console.log(response);
+};
+</code></pre>
+<p>Now when you run the program you should see a Javascript <code>Resonse</code> object printed, something like this:</p>
+<pre><code language="language-javascript" class="language-javascript">Response {
+  status: 200,
+  statusText: &#39;OK&#39;,
+  headers: Headers {
+    date: &#39;Sat, 10 Jan 2026 19:48:27 GMT&#39;,
+    &#39;content-type&#39;: &#39;application/json; charset=utf-8&#39;,
+    &#39;transfer-encoding&#39;: &#39;chunked&#39;,
+    connection: &#39;keep-alive&#39;,
+    server: &#39;cloudflare&#39;,
+    nel: &#39;{&#34;report_to&#34;:&#34;cf-nel&#34;,&#34;success_fraction&#34;:0.0,&#34;max_age&#34;:604800}&#39;,
+    &#39;x-powered-by&#39;: &#39;Express&#39;,
+    &#39;access-control-allow-origin&#39;: &#39;*&#39;,
+    &#39;cache-control&#39;: &#39;no-cache&#39;,
+    etag: &#39;W/&#34;2afe-hd1KiK9lTc0OZKzR1KXTkcTw+vk&#34;&#39;,
+    vary: &#39;Accept-Encoding&#39;,
+    &#39;content-encoding&#39;: &#39;gzip&#39;,
+    &#39;cf-cache-status&#39;: &#39;DYNAMIC&#39;,
+    &#39;report-to&#39;: &#39;{&#34;group&#34;:&#34;cf-nel&#34;,&#34;max_age&#34;:604800,&#34;endpoints&#34;:[{&#34;url&#34;:&#34;https://a.nel.cloudflare.com/report/v4?s=nBveFtQvSI%2BDjlsw0CZxsFZtP9M53pQlWiuIZSiFG33ccE8OsPtIWqm5N8sukn51QXIw4EjOQ4Gpi4KbrZXuv9UlpMspoqykJ2ifvHlxDJb8fnl5XSwOtN8%3D&#34;}]}&#39;,
+    &#39;cf-ray&#39;: &#39;9bbeb1287d8f7685-LHR&#39;,
+    &#39;alt-svc&#39;: &#39;h3=&#34;:443&#34;; ma=86400&#39;
+  },
+  body: ReadableStream { locked: false, state: &#39;readable&#39;, supportsBYOB: true },
+  bodyUsed: false,
+  ok: true,
+  redirected: false,
+  type: &#39;basic&#39;,
+  url: &#39;https://randomuser.me/api?nat=GB&amp;results=10&#39;
+}
+</code></pre>
+<p>The <code>Response</code> object represents the HTTP response to our fetch request and it contains <code>status: 200</code> and <code>statusText: 'OK'</code> which means that the request was successful.  So where is our data?</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Accessing the JSON data" duration="0">
+        <p>The Javascript <code>Response</code> object has a <code>json()</code> function that allows us to retrieve the json data contained in the body of the response.  We cannot just use <code>console.log(response.json())</code> because we will again only see a promise (try it and see).</p>
+<p>We need to use <code>await</code> again to wait for the <code>json()</code> function to return the data.</p>
+<p>Here is the next version of our function:</p>
+<pre><code language="language-javascript" class="language-javascript">const endpoint = &#34;https://randomuser.me/api?nat=GB&amp;results=10&#34;;
+
+const fetchUsers = async () =&gt; {
+    const response =  await fetch(endpoint);
+    const data = await response.json();
+    console.log(data);
+};
+</code></pre>
+<p>Now when we run the code, we should see the data we requested.  Notice that the <code>endpoint</code> variable contains parameters asking for 10 results. I&#39;ve abbreivated the code in the example below, the <code>...</code> indicates where I have abbreviated the object data.  When you run the code, you should see that the <code>results</code> list contains 10 objects describing 10 random users.</p>
+<pre><code language="language-javascript" class="language-javascript">{
+	results: [
+		{
+			gender: &#39;male&#39;,
+			...
+		},
+		...
+	],
+	info: {
+		...
+	}
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Returning the JSON data" duration="0">
+        <p>Lets update our function to return the data and see what we get back.  Edit your function to remove the <code>console.log</code>, and add a <code>return</code> statement to return the data.  Then wrap the call to <code>fetchUsers</code> in a <code>console.log</code> as shown below so we can see what we are getting back from our function:</p>
+<pre><code language="language-javascript" class="language-javascript">const endpoint = &#34;https://randomuser.me/api?nat=GB&amp;results=10&#34;;
+
+const fetchUsers = async () =&gt; {
+    const response =  await fetch(endpoint);
+    const data = await response.json();
+    return data;
+};
+
+console.log(fetchUsers());
+</code></pre>
+<p>When we run this version we again see the output <code>Promise { &lt;pending&gt; }</code>.</p>
+<p>We see that output because <code>fetchUsers</code> is an <code>async</code> function and runs in another thread.  We need our call to <code>fetchUsers</code> to <code>await</code> its response.  Edit your code once more to await the result of the call to <code>fetchUsers</code>:</p>
+<pre><code language="language-javascript" class="language-javascript">const endpoint = &#34;https://randomuser.me/api?nat=GB&amp;results=10&#34;;
+
+const fetchUsers = async () =&gt; {
+    const response =  await fetch(endpoint);
+    const data = await response.json();
+    return data;
+};
+
+const userData = await fetchUsers();
+console.log(userData);
+</code></pre>
+<p>Now we see the JSON data we requested which is in the <code>userData</code> variable and we can then use that data however we want.</p>
+<h2 is-upgraded>Using <code>then</code> in place of <code>await</code></h2>
+<p>There is an alternative way to write the call to <code>fetchUsers</code>.  We can use <code>then</code> to code a function that will be called when a response has been received.  Rewrite the last two lines of the code above as follows:</p>
+<pre><code language="language-javascript" class="language-javascript">fetchUsers().then((userData) =&gt; {
+    console.log(userData);
+});
+</code></pre>
+<p>When you run this version, you should again see the JSON data being printed.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Rendering the data in a web page" duration="0">
+        <p>Lets create an <code>index.html</code> where we will display the user data.  We will include the <code>fetchUsers</code> script in the file and set up a <code>div</code> where we can display the users.</p>
+<pre><code language="language-html" class="language-html">&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Random Users&lt;/title&gt;
+    &lt;link rel=&#34;stylesheet&#34; href=&#34;./users.css&#34;/&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Some random users&lt;/h1&gt;
+    &lt;!-- The content should be inserted into this div --&gt;
+    &lt;div  id=&#34;content&#34;&gt;&lt;/div&gt;
+  &lt;/body&gt;
+  &lt;script src=&#34;./fetchUsers.js&#34;&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+<p>In VSCode you can right click the <code>index.html</code> and choose <code>View in Live Server</code>.  Do that now, you should see a page with the <code>h1</code> header and if you open the developer tools and look in the console you should see the output of the <code>console.log</code>.</p>
+<p>Here is a CSS file we can use to format the data when we display it.  Save the following code into a file called <code>users.css</code> which you will see referenced in the <code>index.html</code> as the stylesheet being used:</p>
+<pre><code language="language-css" class="language-css">.container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    padding: 10px;
+    width = 95%;
+}
+
+.item {
+    padding: 8px;
+    margin: 4px;
+    border: solid;
+    align-items: center;
+}
+
+.item img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.item p {
+    text-align: center;
+}
+</code></pre>
+<p>Lets update our script to add a new function to render the data in the web page.  I&#39;ve used a <code>state</code> object which is similar to the one used in your TV project starter code so that you can use this tutorial to guide you in writing the code for that project.  We will use the <code>state</code> object to store the data we get from the API so that only need make one call to the API.  Our call to <code>fetchUsers</code> will look like this:</p>
+<pre><code language="language-javascript" class="language-javascript">const state = {
+  users: [], // this is our list of users
+};
+
+// code ommitted
+
+fetchUsers().then((users) =&gt; {
+  state.users = users.results;
+  render();
+});
+</code></pre>
+<p>Here is the full code.  We have covered generating HTML objects in Javascript in previous weeks, so I have commented the code so you can read through it to see what the <code>render</code> and <code>displayPerson</code> functions are doing.  In summary, the <code>render</code> function sets up a grid container and then calls <code>displayPerson</code> for each random person in the <code>results</code> list and <code>displayPerson</code> generates the HTML code for each person.</p>
+<pre><code language="language-javascript" class="language-javascript">// Begin with an empty state
+const state = {
+  users: [], // this is our list of users
+};
+
+const endpoint = &#34;https://randomuser.me/api?nat=GB&amp;results=10&#34;;
+
+const fetchUsers = async () =&gt; {
+  const response = await fetch(endpoint);
+  return await response.json();
+};
+
+function render() {
+    // find the div where we are putting the content
+    const content = document.getElementById(&#34;content&#34;);
+    // create a div with the container class to display in a grid
+    // see the CSS for the container class
+    const div = document.createElement(&#34;div&#34;);
+    div.className = &#34;container&#34;;
+    // for each person in the list of users
+    for (let index = 0; index &lt; state.users.length; index++) {
+		// get the person object
+		const person = state.users[index];
+		// get the HTML to display that person
+		const cell = displayPerson(person);
+		// append this person&#39;s HTML to the container grid
+		div.appendChild(cell);
+    }
+    // append the container to the content
+    content.appendChild(div);
+}
+
+function displayPerson(person) {
+    // create a div to display this person
+    const cell = document.createElement(&#34;div&#34;);
+    // use the CSS class called item
+    cell.className = &#34;item&#34;;
+    // create a h2 header
+    const nameHeader = document.createElement(&#34;h2&#34;);
+    // add the person&#39;s name to the h2
+    nameHeader.innerText = person.name.first + &#34; &#34; + person.name.last;
+    // append the h2 to the div
+    cell.appendChild(nameHeader);
+    // return the div
+    return cell
+}
+
+fetchUsers().then((users) =&gt; {
+  state.users = users.results;
+  render();
+});
+</code></pre>
+<p>The <code>displayPerson</code> function is where we create a HTML objects that display the details of a person.  In the example above we are only displaying their names.  View the HTML in your live server, you should see a grid with 10 names.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Displaying more information" duration="0">
+        <p>We can display other data too.  Lets add the persons photo and their address.  Update your <code>displayPerson</code> as shown below to put the photo into an <code>img</code> element and their address into a <code>p</code> element:</p>
+<pre><code language="language-javascript" class="language-javascript">function displayPerson(person) {
+    // create a div to display this person
+    const cell = document.createElement(&#34;div&#34;);
+    // use the CSS class called item
+    cell.className = &#34;item&#34;;
+    // create a h2 header
+    const nameHeader = document.createElement(&#34;h2&#34;);
+    // add the person&#39;s name to the h2
+    nameHeader.innerText = person.name.first + &#34; &#34; + person.name.last;
+    // append the h2 to the div
+    cell.appendChild(nameHeader);
+    // create an img element
+    const picImg = document.createElement(&#34;img&#34;);
+    // set the src of the image to be the url of the large image
+    picImg.src = person.picture.large;
+    // append the image to the cell
+    cell.appendChild(picImg);
+    // create a p element to show the person&#39;s address
+    const addressP = document.createElement(&#34;p&#34;);
+    // get the address
+    const loc = person.location;
+    // add the address to the p element
+    addressP.innerText = `${loc.street.number} ${loc.street.name}, ${loc.city}, ${loc.postcode}`;
+    // append the p to the div
+    cell.appendChild(addressP);
+    // return the div
+    return cell
+}
+</code></pre>
+<p>Reload the page in your browser and the grid should now contain a picture for each person and their address.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Conclusion" duration="0">
+        <p>You have learned:</p>
+<ul>
+<li>How to write an <code>async</code> function and use <code>await</code> to wait for a response</li>
+<li>How to call an <code>async</code> function and use either <code>await</code> or <code>then</code> to process the response.</li>
+<li>Processed the JSON data from the random user API to render it in a HTML file</li>
+<li>Viewed the resulting HTML in the live server.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
