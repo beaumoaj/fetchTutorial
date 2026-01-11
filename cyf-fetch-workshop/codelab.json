@@ -3,12 +3,11 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2026-01-11T11:01:01Z",
+  "updated": "2026-01-11T12:49:24Z",
   "id": "cyf-fetch-workshop",
   "duration": 0,
-  "title": "Codelab Markdown Template",
-  "authors": "Tony Beaumont",
-  "summary": "Codelab Markdown Template",
+  "title": "Fetching API data",
+  "summary": "Fetching API data",
   "source": "workshop.md",
   "theme": "",
   "status": [
@@ -21,7 +20,8 @@
   ],
   "tags": [
     "fetch",
-    "javascript"
+    "javascript",
+    "web"
   ],
   "feedback": "ajbeaumont.tb@gmail.com",
   "url": "cyf-fetch-workshop"
