@@ -1,6 +1,6 @@
 author: Tony Beaumont
 summary: Fetching API data
-id: cyf-fetch-workshop
+id: docs
 categories: javascript, fetch, json
 tags: fetch, javascript
 status: Draft
