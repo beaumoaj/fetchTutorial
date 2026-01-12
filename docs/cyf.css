@@ -1,3 +1,8 @@
+ul.checklist li::marker {
+    content: '\2714\0020'; /* '✓'; */
+    color: green;
+}
+
 ol[type="1"]::before {
     font-weight: bold;
     font-size: 1.875em;
@@ -24,7 +29,3 @@ ol[type="1"] ol[type="1"] {
     );
 }​
 
-ul.checklist li::marker {
-    content: '\2714\0020'; /* '✓'; */
-  color: green;
-}
