@@ -24,7 +24,7 @@ ol[type="1"] ol[type="1"] {
     );
 }​
 
-ul.checklist li::marker {
+ul.checklist > li::marker {
     content: '\2714\0020'; /* '✓'; */
   color: green;
 }
