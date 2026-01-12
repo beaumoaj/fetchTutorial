@@ -11,11 +11,20 @@ Feedback Link: ajbeaumont.tb@gmail.com
 
 ## Introduction
 
-In this workshop you are going to learn how to use `fetch` to get some data in JSON format from an API.  You need
+In this workshop you are going to learn how to use `fetch` to get some data in JSON format from an API.  
+
+### What you'll need
 
 - VS Code
 - Node
 - CYF extensions installed in VS Code
+
+### What you'll learn
+
+* How to fetch data from an API, in this case data representing random fictitious people.
+* How to write an `async` function and use `await` to wait for a response
+* How to call an `async` function using either `await` or `.then()`
+* How to render the JSON data we get in a web page.
 
 ## Getting data about random users
 
@@ -548,7 +557,8 @@ We can display other data too.  Lets add the persons photo and their address.
 
 ## Conclusion
 
-You have learned:
+### What we've covered
+
 * How to write an `async` function and use `await` to wait for a response
 * How to call an `async` function and use either `await` or `then` to process the response.
 * Processed the JSON data from the random user API to render it in a HTML file
